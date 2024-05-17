@@ -2,7 +2,7 @@
 
 ## Authors
 
-Georgina Ramírez-Ortiz<sup>1</sup>, Andrés López-Pérez<sup>2</sup>, Omar Valencia-Méndez<sup>3</sup>, <sup>1</sup>, Luis Hernández<sup>4</sup>, Tania González-Mendoza<sup>3</sup>
+Georgina Ramírez-Ortiz<sup>1</sup>, Andrés López-Pérez<sup>2</sup>, Omar Valencia-Méndez<sup>3</sup>, Luis Hernández<sup>4</sup>, Tania González-Mendoza<sup>3</sup>
 
 Corresponding author: Georgina Ramírez-Ortiz, gramirezortiz@ola.icmyl.unam.mx
 
