@@ -18,11 +18,12 @@ names(D_dataset)
 # Select species
 weight.D <- D_dataset[, c(9:107)]
 
-# Simpson index
-simpson <- matrix(nrow = nrow(weight.D), ncol = 1, byrow = T)
-colnames(simpson) <- c('Simpson')
+# Simpson and Shannon indeces
+indices <- matrix(nrow = nrow(weight.D), ncol = 2, byrow = T)
+colnames(indices) <- c('Simpson', 'Shannon')
 for (i in 1:nrow(weight.D)) {
-  simpson[i, 1] <- diversity(weight.D[i, ], index = 'simpson')
+  indices[i, 1] <- diversity(weight.D[i, ], index = 'simpson')
+  indices[i, 2] <- diversity(weight.D[i, ], index = 'shannon')
 }
 
 # Read the traits dataset
@@ -59,7 +60,7 @@ sum(check_the_names$rownames.FM.==check_the_names$colnames.weight1.)
 weight1 <- as.matrix(weight1)
 
 # Perform a PCoA
-Dist <- daisy(FM,"gower")
+Dist <- daisy(FM, "gower")
 pco <- pcoa(Dist)
 eigenvalues<-pco$values
 
