@@ -18,13 +18,15 @@ names(D_dataset)
 # Select species
 weight.D <- D_dataset[, c(9:107)]
 
-# Simpson and Shannon indeces
-indices <- matrix(nrow = nrow(weight.D), ncol = 2, byrow = T)
-colnames(indices) <- c('Simpson', 'Shannon')
+# Simpson index
+simpson <- matrix(nrow = nrow(weight.D), ncol = 1, byrow = T)
+colnames(simpson) <- c('Simpson')
+row.names(simpson) <- rownames(weight.D)
 for (i in 1:nrow(weight.D)) {
-  indices[i, 1] <- diversity(weight.D[i, ], index = 'simpson')
-  indices[i, 2] <- diversity(weight.D[i, ], index = 'shannon')
+  simpson[i, 1] <- diversity(weight.D[i, ], index = 'simpson')
 }
+
+simpson <- cbind(D_dataset[, c(3, 5, 7:8)], simpson)
 
 # Read the traits dataset
 FM <- read.csv("Data/PNH_Traits.csv", row.names = 1)
@@ -117,6 +119,10 @@ NP.lmer.D <- lmer(log(Tot_weight, base = 2) ~ Year_cons + (1|Site) +
                     (1|Season), data= NP)
 summ(NP.lmer.D)
 
+NP.lmer.Sim <- indices %>% filter(Human_use_level == 'Non-protected') %>%
+  lmer(Simpson ~ Year_cons + (1|Site) + (1|Season), data = .)
+summ(NP.lmer.Sim)
+
 NP.lmer.FR <- lmer(FRic ~ Year_cons + (1|Site) + (1|Season), data = NP)
 summ(NP.lmer.FR)
 
@@ -132,6 +138,10 @@ NP.lmer.S.sca <- lmer(scale(Nb_sp) ~ Year_cons + (1|Site) + (1|Season), data= NP
 NP.lmer.D.sca <- lmer(scale(log(Tot_weight, base = 2)) ~ Year_cons +
                         (1|Site)+ (1|Season), data= NP)
 
+NP.lmer.Sim.sca <- indices %>%
+  filter(Human_use_level == 'Non-protected') %>%
+  lmer(scale(Simpson) ~ Year_cons + (1|Site) + (1|Season), data = .)
+
 NP.lmer.FR.sca <- lmer(scale(FRic) ~ Year_cons + (1|Site) + (1|Season), data= NP)
 
 NP.lmer.FD.sca <-lmer(scale(FDiv) ~ Year_cons + (1|Site) + (1|Season), data= NP)
@@ -143,19 +153,21 @@ NP.coefs.S <- as.data.frame(summary(NP.lmer.S.sca)$coefficients[-1, 1:2])
 
 NP.coefs.D <- as.data.frame(summary(NP.lmer.D.sca)$coefficients[-1, 1:2])
 
+NP.coefs.Sim <- as.data.frame(summary(NP.lmer.Sim.sca)$coefficients[-1, 1:2])
+
 NP.coefs.FR <- as.data.frame(summary(NP.lmer.FR.sca)$coefficients[-1, 1:2])
 
 NP.coefs.FD <- as.data.frame(summary(NP.lmer.FD.sca)$coefficients[-1, 1:2])
 
 NP.coefs.FO <- as.data.frame(summary(NP.lmer.FO.sca)$coefficients[-1, 1:2])
 
-a <- cbind(NP.coefs.S, NP.coefs.D, NP.coefs.FR, NP.coefs.FD, NP.coefs.FO)
+a <- cbind(NP.coefs.S, NP.coefs.D, NP.coefs.Sim, NP.coefs.Sha, NP.coefs.FR, NP.coefs.FD, NP.coefs.FO)
 
-colnames(a) <- c("S", "D", "FRic", "FDiv", "FOri")
+colnames(a) <- c("S", "D", "Simpson", "FRic", "FDiv", "FOri")
 
 coefs.data <- data.frame(t(a))
 colnames(coefs.data) <- c("Estimate", "se")
-coefs.data$Indices <- factor(rownames(coefs.data), ordered = T, levels = rev(c("S", "D", "FRic", "FDiv", "FOri")))
+coefs.data$Indices <- factor(rownames(coefs.data), ordered = T, levels = rev(c("S", "D", "Simpson", "Shannon", "FRic", "FDiv", "FOri")))
 str(coefs.data$Indices)
 
 NP.fig.coef.model<- ggplot(coefs.data, aes(x = Indices, y = Estimate, fill = Indices)) +
@@ -165,6 +177,7 @@ NP.fig.coef.model<- ggplot(coefs.data, aes(x = Indices, y = Estimate, fill = Ind
                 lwd = 1, colour = "black", width = 0) +
   geom_point(size = 20, pch = 21, stroke = 1) +
   scale_fill_manual(values = rev(c("coral2", "coral2", "gray80",
+                                   "gray80", "gray80",
                                    "gray80", "gray80"))) +
   theme_bw() +
   theme(panel.grid = element_blank(),
