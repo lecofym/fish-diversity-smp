@@ -119,7 +119,7 @@ NP.lmer.D <- lmer(log(Tot_weight, base = 2) ~ Year_cons + (1|Site) +
                     (1|Season), data= NP)
 summ(NP.lmer.D)
 
-NP.lmer.Sim <- indices %>% filter(Human_use_level == 'Non-protected') %>%
+NP.lmer.Sim <- simpson %>% filter(Human_use_level == 'Non-protected') %>%
   lmer(Simpson ~ Year_cons + (1|Site) + (1|Season), data = .)
 summ(NP.lmer.Sim)
 
@@ -138,7 +138,7 @@ NP.lmer.S.sca <- lmer(scale(Nb_sp) ~ Year_cons + (1|Site) + (1|Season), data= NP
 NP.lmer.D.sca <- lmer(scale(log(Tot_weight, base = 2)) ~ Year_cons +
                         (1|Site)+ (1|Season), data= NP)
 
-NP.lmer.Sim.sca <- indices %>%
+NP.lmer.Sim.sca <- simpson %>%
   filter(Human_use_level == 'Non-protected') %>%
   lmer(scale(Simpson) ~ Year_cons + (1|Site) + (1|Season), data = .)
 
@@ -161,7 +161,7 @@ NP.coefs.FD <- as.data.frame(summary(NP.lmer.FD.sca)$coefficients[-1, 1:2])
 
 NP.coefs.FO <- as.data.frame(summary(NP.lmer.FO.sca)$coefficients[-1, 1:2])
 
-a <- cbind(NP.coefs.S, NP.coefs.D, NP.coefs.Sim, NP.coefs.Sha, NP.coefs.FR, NP.coefs.FD, NP.coefs.FO)
+a <- cbind(NP.coefs.S, NP.coefs.D, NP.coefs.Sim, NP.coefs.FR, NP.coefs.FD, NP.coefs.FO)
 
 colnames(a) <- c("S", "D", "Simpson", "FRic", "FDiv", "FOri")
 
@@ -200,6 +200,10 @@ MPA.lmer.D <- lmer(log(Tot_weight, base = 2) ~ Year_cons + (1|Site) +
                      (1|Season), data= MPA)
 summ(MPA.lmer.D)
 
+MPA.lmer.Sim <- simpson %>% filter(Human_use_level == 'MPA') %>%
+  lmer(Simpson ~ Year_cons + (1|Site) + (1|Season), data = .)
+summ(MPA.lmer.Sim)
+
 MPA.lmer.FR <- lmer(FRic ~ Year_cons + (1|Site) + (1|Season), data = MPA)
 summ(MPA.lmer.FR)
 
@@ -215,6 +219,9 @@ MPA.lmer.S.sca <- lmer(scale(Nb_sp) ~ Year_cons + (1|Site) + (1|Season), data = 
 MPA.lmer.D.sca <- lmer(scale(log(Tot_weight, base = 2)) ~ Year_cons +
                          (1|Site) + (1|Season), data = MPA)
 
+MPA.lmer.Sim.sca <- simpson %>% filter(Human_use_level == 'MPA') %>%
+  lmer(scale(Simpson) ~ Year_cons + (1|Site) + (1|Season), data = .)
+
 MPA.lmer.FR.sca <- lmer(scale(FRic) ~ Year_cons + (1|Site) + (1|Season), data = MPA)
 
 MPA.lmer.FD.sca <-lmer(scale(FDiv) ~ Year_cons + (1|Site) + (1|Season), data = MPA)
@@ -226,19 +233,21 @@ MPA.coefs.S <- as.data.frame(summary(MPA.lmer.S.sca)$coefficients[-1, 1:2])
 
 MPA.coefs.D <- as.data.frame(summary(MPA.lmer.D.sca)$coefficients[-1, 1:2])
 
+MPA.coefs.Sim <- as.data.frame(summary(MPA.lmer.Sim.sca)$coefficients[-1, 1:2])
+
 MPA.coefs.FR <- as.data.frame(summary(MPA.lmer.FR.sca)$coefficients[-1, 1:2])
 
 MPA.coefs.FD <- as.data.frame(summary(MPA.lmer.FD.sca)$coefficients[-1, 1:2])
 
 MPA.coefs.FO <- as.data.frame(summary(MPA.lmer.FO.sca)$coefficients[-1, 1:2])
 
-b <- cbind(MPA.coefs.S, MPA.coefs.D, MPA.coefs.FR, MPA.coefs.FD, MPA.coefs.FO)
+b <- cbind(MPA.coefs.S, MPA.coefs.D, MPA.coefs.Sim, MPA.coefs.FR, MPA.coefs.FD, MPA.coefs.FO)
 
-colnames(b) <- c("S", "D", "FRic", "FDiv", "FOri")
+colnames(b) <- c("S", "D", "Simpson", "FRic", "FDiv", "FOri")
 
 MPA.coefs.data <- data.frame(t(b))
 colnames(MPA.coefs.data) <- c("Estimate", "se")
-MPA.coefs.data$Indices <- factor(rownames(MPA.coefs.data), ordered = T, levels = rev(c("S", "D", "FRic", "FDiv", "FOri")))
+MPA.coefs.data$Indices <- factor(rownames(MPA.coefs.data), ordered = T, levels = rev(c("S", "D", "Simpson","FRic", "FDiv", "FOri")))
 
 MPA.fig.coef.model<- ggplot(MPA.coefs.data, aes(x = Indices, y = Estimate, fill = Indices)) +
   ggtitle("a) MPA") + geom_hline(yintercept = 0, lty = 2, lwd = 1,
@@ -248,7 +257,7 @@ MPA.fig.coef.model<- ggplot(MPA.coefs.data, aes(x = Indices, y = Estimate, fill 
   geom_point(size = 20, pch = 21, stroke = 1) +
   scale_fill_manual(values = rev(c("dodgerblue3", "dodgerblue3",
                                    "dodgerblue3", "dodgerblue3",
-                                   "dodgerblue3"))) +
+                                   "dodgerblue3", "dodgerblue3"))) +
   theme_bw() +
   theme(panel.grid = element_blank(),
         panel.background = element_rect(color = "black", linewidth = 2),
