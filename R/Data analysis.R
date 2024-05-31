@@ -278,7 +278,8 @@ MPA.fig.coef.model
 Estimate.graph <- MPA.fig.coef.model + NP.fig.coef.model + plot_layout(nrow = 1, guides = "collect")
 
 ggsave('Figs/Figure_3.tiff', plot = Estimate.graph,
-       width = 2250, height = 2625, units = 'px', dpi = 320)
+       width = 2250, height = 2625, units = 'px', dpi = 320,
+       compression = "lzw")
 
 
 #### Spatial analyses of fish diversity ####
@@ -569,4 +570,5 @@ pair_data_ori2 <- map_df(ori_data2, ~ data.frame(.x), .id = "Human_use_level") %
 Spatial.graph <- F_rich1 + F_div1 + F_ori1 + F_rich2 + F_div2 + F_ori2 + plot_layout(nrow = 2, guides = "collect")
 
 ggsave('Figs/Figure_2.tiff', plot = Spatial.graph,
-       width = 2250, height = 2000, units = 'px', dpi = 320)
+       width = 2250, height = 2000, units = 'px', dpi = 320,
+       compression = "lzw")
