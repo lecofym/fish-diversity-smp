@@ -9,10 +9,14 @@ pacman:: p_load(tidyverse, lme4, jtools, vegan, arm, ade4, diveRsity,
                 geometry, rcdd, patchwork, plotly, devtools, ape,
                 gtools, elbow)
 
+# Clean console ####
+rm(list = ls())
+shell('cls')
 
 #### Calculation of ecological indicators####
 # Read the density dataset
-D_dataset<-read.csv("Data/PNH_Density.csv", header=TRUE, row.names = 1)
+D_dataset<-read.csv("Data/PNH_Density.csv", header = TRUE,
+                    row.names = 1)
 names(D_dataset)
 
 # Select species
@@ -163,11 +167,11 @@ NP.coefs.FO <- as.data.frame(summary(NP.lmer.FO.sca)$coefficients[-1, 1:2])
 
 a <- cbind(NP.coefs.S, NP.coefs.D, NP.coefs.Sim, NP.coefs.FR, NP.coefs.FD, NP.coefs.FO)
 
-colnames(a) <- c("S", "D", "Simpson", "FRic", "FDiv", "FOri")
+colnames(a) <- c("S", "d", "D", "FRic", "FDiv", "FOri")
 
 coefs.data <- data.frame(t(a))
 colnames(coefs.data) <- c("Estimate", "se")
-coefs.data$Indices <- factor(rownames(coefs.data), ordered = T, levels = rev(c("S", "D", "Simpson", "Shannon", "FRic", "FDiv", "FOri")))
+coefs.data$Indices <- factor(rownames(coefs.data), ordered = T, levels = rev(c("S", "d", "D", "Shannon", "FRic", "FDiv", "FOri")))
 str(coefs.data$Indices)
 
 NP.fig.coef.model<- ggplot(coefs.data, aes(x = Indices, y = Estimate, fill = Indices)) +
@@ -175,7 +179,7 @@ NP.fig.coef.model<- ggplot(coefs.data, aes(x = Indices, y = Estimate, fill = Ind
                                 colour = "black") +
   geom_errorbar(aes(ymin = Estimate - 1.96*se, ymax = Estimate + 1.96*se),
                 lwd = 1, colour = "black", width = 0) +
-  geom_point(size = 20, pch = 21, stroke = 1) +
+  geom_point(size = 13, pch = 21, stroke = 1) +
   scale_fill_manual(values = rev(c("coral2", "coral2", "gray80",
                                    "gray80", "gray80",
                                    "gray80", "gray80"))) +
@@ -243,18 +247,18 @@ MPA.coefs.FO <- as.data.frame(summary(MPA.lmer.FO.sca)$coefficients[-1, 1:2])
 
 b <- cbind(MPA.coefs.S, MPA.coefs.D, MPA.coefs.Sim, MPA.coefs.FR, MPA.coefs.FD, MPA.coefs.FO)
 
-colnames(b) <- c("S", "D", "Simpson", "FRic", "FDiv", "FOri")
+colnames(b) <- c("S", "d", "D", "FRic", "FDiv", "FOri")
 
 MPA.coefs.data <- data.frame(t(b))
 colnames(MPA.coefs.data) <- c("Estimate", "se")
-MPA.coefs.data$Indices <- factor(rownames(MPA.coefs.data), ordered = T, levels = rev(c("S", "D", "Simpson","FRic", "FDiv", "FOri")))
+MPA.coefs.data$Indices <- factor(rownames(MPA.coefs.data), ordered = T, levels = rev(c("S", "d", "D", "FRic", "FDiv", "FOri")))
 
 MPA.fig.coef.model<- ggplot(MPA.coefs.data, aes(x = Indices, y = Estimate, fill = Indices)) +
   ggtitle("a) MPA") + geom_hline(yintercept = 0, lty = 2, lwd = 1,
                                  colour = "black") +
   geom_errorbar(aes(ymin = Estimate - 1.96*se, ymax = Estimate + 1.96*se),
                 lwd = 1, colour = "black", width = 0) +
-  geom_point(size = 20, pch = 21, stroke = 1) +
+  geom_point(size = 13, pch = 21, stroke = 1) +
   scale_fill_manual(values = rev(c("dodgerblue3", "dodgerblue3",
                                    "dodgerblue3", "dodgerblue3",
                                    "dodgerblue3", "dodgerblue3"))) +
@@ -263,11 +267,11 @@ MPA.fig.coef.model<- ggplot(MPA.coefs.data, aes(x = Indices, y = Estimate, fill 
         panel.background = element_rect(color = "black", linewidth = 2),
         axis.text.x = element_text(size = 15, angle = 90),
         axis.title.x = element_text(size = 30, angle = 0),
-        axis.text.y = element_text(size = 28, angle = 0),
+        axis.text.y = element_text(size = 20, angle = 0),
         axis.title.y = element_blank(),
         legend.position = "none", text = element_text(family = "TT Arial"),
         plot.title = element_text(size = 30, face = "bold")) +
-  scale_y_continuous (breaks = seq(-0.1, 0.5, 0.05)) +
+  scale_y_continuous (breaks = seq(-0.1, 0.2, 0.05)) +
   coord_flip()
 MPA.fig.coef.model
 
