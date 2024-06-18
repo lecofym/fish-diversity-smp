@@ -36,7 +36,7 @@ theme_set(theme_tech(theme = "google")+
 (plot2 <- plot1 + theme(text = element_text(size = 16),
                         axis.text = element_text(size = 14)))
 
-ggsave("Figs/FBiomass_CommercialFish.tiff", plot2,
+ggsave("Figures and Tables/FBiomass_CommercialFish.tiff", plot2,
        width = 2250, height = 1312, units = 'px', dpi = 320,
        bg= "white", compression = "lzw")
 
@@ -59,7 +59,7 @@ ggsave("Figs/FBiomass_CommercialFish.tiff", plot2,
 (plot4 <- plot3 + theme(text = element_text(size = 16),
                         axis.text = element_text(size = 14)))
 
-ggsave("Figs/FBiomass_Non-commercialFish.tiff", plot4,
+ggsave("Figures and Tables/FBiomass_Non-commercialFish.tiff", plot4,
        width = 2250, height = 1312, units = 'px', dpi = 320,
        bg= "white", compression = "lzw")
 
@@ -86,7 +86,7 @@ FDensity <- read.csv("Data/PNH_FDensity.csv", header = T)
 (plot11 <- plot10 + theme(text = element_text(size = 16),
                           axis.text = element_text(size = 14)))
 
-ggsave("Figs/FDensity_CommercialFish.tiff", plot11,
+ggsave("Figures and Tables/FDensity_CommercialFish.tiff", plot11,
        width = 2250, height = 1312, units = 'px', dpi = 320,
        bg= "white", compression = "lzw")
 
@@ -108,6 +108,6 @@ ggsave("Figs/FDensity_CommercialFish.tiff", plot11,
 (plot21 <- plot20 + theme(text = element_text(size = 16),
                           axis.text = element_text(size = 14)))
 
-ggsave("Figs/FDensity_Non-commercialFish.tiff", plot21,
+ggsave("Figures and Tables/FDensity_Non-commercialFish.tiff", plot21,
        width = 2250, height = 1312, units = 'px', dpi = 320,
        bg= "white", compression = "lzw")
