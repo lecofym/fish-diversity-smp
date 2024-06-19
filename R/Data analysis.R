@@ -180,7 +180,7 @@ NP.fig.coef.model<- ggplot(coefs.data, aes(x = Indices, y = Estimate, fill = Ind
   geom_errorbar(aes(ymin = Estimate - 1.96*se, ymax = Estimate + 1.96*se),
                 lwd = 1, colour = "black", width = 0) +
   geom_point(size = 13, pch = 21, stroke = 1) +
-  scale_fill_manual(values = rev(c("coral2", "coral2", "gray80",
+  scale_fill_manual(values = rev(c("coral2", "coral2",
                                    "gray80", "gray80",
                                    "gray80", "gray80"))) +
   theme_bw() +
@@ -260,7 +260,7 @@ MPA.fig.coef.model<- ggplot(MPA.coefs.data, aes(x = Indices, y = Estimate, fill 
                 lwd = 1, colour = "black", width = 0) +
   geom_point(size = 13, pch = 21, stroke = 1) +
   scale_fill_manual(values = rev(c("dodgerblue3", "dodgerblue3",
-                                   "dodgerblue3", "dodgerblue3",
+                                   "gray80", "dodgerblue3",
                                    "dodgerblue3", "dodgerblue3"))) +
   theme_bw() +
   theme(panel.grid = element_blank(),
