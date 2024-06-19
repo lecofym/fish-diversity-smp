@@ -7,7 +7,11 @@ pacman:: p_load(tidyverse, lme4, jtools, vegan, arm, ade4, diveRsity,
                 cluster, clue, FD, ggrepel, reshape2, rcompanion,
                 psych, car, mgcv, stats, emstreeR, ggConvexHull, Rcpp,
                 geometry, rcdd, patchwork, plotly, devtools, ape,
-                gtools, elbow)
+                gtools, elbow, extrafont)
+
+# Loading fonts for plots (use once)
+font_import()
+loadfonts(device = 'win')
 
 # Clean console ####
 rm(list = ls())
@@ -191,7 +195,7 @@ NP.fig.coef.model<- ggplot(coefs.data, aes(x = Indices, y = Estimate, fill = Ind
         axis.text.y = element_blank(),
         axis.title.y = element_blank(),
         legend.position = "none",
-        text = element_text(family = "TT Arial"),
+        text = element_text(family = "Arial"),
         plot.title = element_text(size = 30, face = "bold")) +
   coord_flip()
 NP.fig.coef.model
@@ -269,7 +273,7 @@ MPA.fig.coef.model<- ggplot(MPA.coefs.data, aes(x = Indices, y = Estimate, fill 
         axis.title.x = element_text(size = 30, angle = 0),
         axis.text.y = element_text(size = 20, angle = 0),
         axis.title.y = element_blank(),
-        legend.position = "none", text = element_text(family = "TT Arial"),
+        legend.position = "none", text = element_text(family = "Arial"),
         plot.title = element_text(size = 30, face = "bold")) +
   scale_y_continuous (breaks = seq(-0.1, 0.2, 0.05)) +
   coord_flip()
