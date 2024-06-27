@@ -23,25 +23,25 @@ NP.data <- D.dataset %>% filter(Human_use_level == 'Non-protected') %>%
 MUMPA.curve <- decostand(MUMPA.data, method = 'pa') %>%
   specaccum(., method = 'rarefaction')
 MUMPA.curve <- data.frame(Human.use = 'MPA',
-                          Sites = MUMPA.curve$sites,
+                          Transect = MUMPA.curve$sites,
                           Richness = MUMPA.curve$richness,
                           SD = MUMPA.curve$sd)
 
 NP.curve <- decostand(NP.data, method = 'pa') %>%
   specaccum(., method = 'rarefaction')
 NP.curve <- data.frame(Human.use = 'NP',
-                          Sites = NP.curve$sites,
+                          Transect = NP.curve$sites,
                           Richness = NP.curve$richness,
                           SD = NP.curve$sd)
 
 # Plotting and saving curves ###
 plot.data <- rbind(MUMPA.curve, NP.curve)
 
-(rare.curves <- ggplot(plot.data, aes(x = Sites, y = Richness,
+(rare.curves <- ggplot(plot.data, aes(x = Transect, y = Richness,
                               color = Human.use, fill = Human.use)) +
   geom_point() +
   geom_line() +
-  geom_ribbon(aes(x = Sites, ymin = (Richness - 2*SD),
+  geom_ribbon(aes(x = Transect, ymin = (Richness - 2*SD),
                   ymax = (Richness + 2*SD)), alpha = 0.2) +
   scale_y_continuous(limits = c(0, 100),
                      breaks = seq(0, 100, by = 10))+
