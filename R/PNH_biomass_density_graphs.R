@@ -1,6 +1,6 @@
 # Download and load packages ####
 devtools:: install_github("ricardo-bion/ggtech", dependencies = TRUE)
-pacman:: p_load(tidyverse, ggtech, ggpubr)
+pacman:: p_load(tidyverse, ggtech, ggpubr, extrafont, gridExtra)
 
 # Clean console ####
 rm(list = ls())
@@ -14,8 +14,8 @@ FBiomass$Non_commercial = (log(FBiomass$Non_commercial)+1)
 
 # Set theme
 theme_set(theme_tech(theme = "google")+
-            theme(text=element_text(size=25)) +
-            theme(legend.position="NA"))
+            theme(text = element_text(size = 7)) +
+            theme(legend.position = "NA"))
 
 # Graph: Biomass Commercial Fishes ####
 (plot1 <- FBiomass %>%
@@ -27,18 +27,19 @@ theme_set(theme_tech(theme = "google")+
     scale_color_manual(values = c("dodgerblue3", "coral2")) +
     ggpubr::stat_cor(aes(color = Protection, size = 15,
                          label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
-                     size = 7) +
+                     size = 4) +
     scale_x_continuous(breaks = seq(2006, 2020, by = 2)) +
     scale_y_continuous(limits = c(3, 11)) +
-    labs(x = "",
-         y = expression("Biomass commercial fish (logX+1)")))
+    labs(x = NULL,
+         y = 'Biomass (logX+1)',
+         subtitle = "c) Biomass commercial species"))
 
-(plot2 <- plot1 + theme(text = element_text(size = 16),
-                        axis.text = element_text(size = 14)))
+(plot2 <- plot1 + theme(text = element_text(family = "Arial",
+                                            size = 10),
+                        axis.text = element_text(size = 8),
+                        plot.subtitle = element_text(color = 'black',
+                                                     size = 10)))
 
-ggsave("Figures and Tables/FBiomass_CommercialFish.tiff", plot2,
-       width = 2250, height = 1312, units = 'px', dpi = 320,
-       bg= "white", compression = "lzw")
 
 # Graph: Biomass Non-Commercial ####
 (plot3 <- FBiomass %>%
@@ -50,18 +51,19 @@ ggsave("Figures and Tables/FBiomass_CommercialFish.tiff", plot2,
     scale_color_manual(values = c("dodgerblue3", "coral2")) +
     ggpubr::stat_cor(aes(color = Protection, size = 15,
                          label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
-                     size = 7) +
+                     size = 4) +
     scale_x_continuous(breaks = seq(2006, 2020, by = 2)) +
     scale_y_continuous(limits = c(3, 11)) +
-    labs(x = "",
-         y = expression("Biomass non-commercial fish (logX+1)")))
+    labs(x = NULL,
+         y = NULL,
+         subtitle = "d) Biomass non-commercial species"))
 
-(plot4 <- plot3 + theme(text = element_text(size = 16),
-                        axis.text = element_text(size = 14)))
+(plot4 <- plot3 + theme(text = element_text(family = "Arial",
+                                            size = 10),
+                        axis.text = element_text(size = 8),
+                        plot.subtitle = element_text(color = 'black',
+                                                     size = 10)))
 
-ggsave("Figures and Tables/FBiomass_Non-commercialFish.tiff", plot4,
-       width = 2250, height = 1312, units = 'px', dpi = 320,
-       bg= "white", compression = "lzw")
 
 # ------------------------------------------------------ Density ####
 
@@ -77,18 +79,19 @@ FDensity <- read.csv("Data/PNH_FDensity.csv", header = T)
     scale_color_manual(values = c("dodgerblue3", "coral2")) +
     ggpubr::stat_cor(aes(color = Protection, size = 15,
                          label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
-                     size = 7) +
+                     size = 4) +
     scale_x_continuous(breaks = seq(2006, 2020, by = 2))+
     scale_y_continuous(limits = c(0, 0.025)) +
-    labs(x = "",
-         y = expression("Density commercial fish")))
+    labs(x = NULL,
+         y = expression(Density),
+         subtitle = expression('a) Density commercial species')))
 
-(plot11 <- plot10 + theme(text = element_text(size = 16),
-                          axis.text = element_text(size = 14)))
+(plot11 <- plot10 + theme(text = element_text(family = "Arial",
+                                              size = 10),
+                          axis.text = element_text(size = 8),
+                          plot.subtitle = element_text(color = 'black',
+                                                       size = 10)))
 
-ggsave("Figures and Tables/FDensity_CommercialFish.tiff", plot11,
-       width = 2250, height = 1312, units = 'px', dpi = 320,
-       bg= "white", compression = "lzw")
 
 # Figure: Density Non Commercial Fishes ####
 (plot20 <- FDensity %>%
@@ -100,14 +103,21 @@ ggsave("Figures and Tables/FDensity_CommercialFish.tiff", plot11,
     scale_color_manual(values = c("dodgerblue3", "coral2")) +
     ggpubr::stat_cor(aes(color = Protection, size = 15,
                          label = paste(..rr.label.., ..p.label.., sep = "~`,`~")),
-                     size = 7) +
+                     size = 4) +
     scale_x_continuous(breaks = seq(2006, 2020, by = 2))+
-    labs(x = "",
-         y = expression("Density non-commercial fish")))
+    labs(x = NULL,
+         y = NULL,
+         subtitle = 'b) Density non-commercial species'))
 
-(plot21 <- plot20 + theme(text = element_text(size = 16),
-                          axis.text = element_text(size = 14)))
+(plot21 <- plot20 + theme(text = element_text(family = "Arial",
+                                              size = 10),
+                          axis.text = element_text(size = 8),
+                          plot.subtitle = element_text(color = 'black',
+                                                       size = 10)))
 
-ggsave("Figures and Tables/FDensity_Non-commercialFish.tiff", plot21,
+all.plots <- grid.arrange(plot11, plot21, plot2, plot4)
+
+ggsave("Figures and Tables/Figure_4.tiff", all.plots,
        width = 2250, height = 1312, units = 'px', dpi = 320,
        bg= "white", compression = "lzw")
+# 2250 x 2625
