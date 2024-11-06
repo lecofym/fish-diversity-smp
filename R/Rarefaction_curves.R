@@ -47,7 +47,7 @@ plot.data <- rbind(MUMPA.curve, NP.curve)
                      breaks = seq(0, 100, by = 10))+
   scale_fill_manual(values = c("dodgerblue3", "coral2")) +
   scale_color_manual(values = c("dodgerblue3", "coral2")) +
-  labs(y = 'Species richness')+
+ labs(x= 'Sampling units', y = 'Species richness') +
   theme_bw() +
   theme(panel.grid = element_blank(),
         axis.text = element_text(size = 14),
